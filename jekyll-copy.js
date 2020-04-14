@@ -1,10 +1,18 @@
-// https://www.smashingmagazine.com/2017/03/interactive-command-line-application-node-js/?utm_source=javascriptweekly&utm_medium=email
+/**
+ * Jekyll Copy Module
+ */
 
-var program = require('commander');
+const fs = require('fs');
+// https://github.com/SBoudrias/Inquirer.js 
+const inquirer = require('inquirer');
+// https://www.npmjs.com/package/commander
+const program = require('commander');
 
 program
   .version('0.0.1')
-  .option('-l, --list [list]', 'list of customers in CSV file')
+  .command('ls <folder>', 'list the Jekyll template folders/files')
+  .description('')
+  .command('--cp [copy]', 'Copy a Jekyll template file to the current location')
   .parse(process.argv)
 
 console.log(program.list);
