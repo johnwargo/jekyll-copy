@@ -1,0 +1,16 @@
+{
+  "name": "jekyll-copy",
+  "version": "1.0.0",
+  "description": "",
+  "main": "jekyll-copy.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "John M. Wargo",
+  "license": "MIT",
+  "dependencies": {
+    "chalk": "^4.0.0",
+    "commander": "^5.0.0",
+    "inquirer": "^7.1.0"
+  }
+}
