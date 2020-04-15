@@ -7,6 +7,7 @@ var chalk = require('chalk');
 const fs = require('fs');
 // https://github.com/SBoudrias/Inquirer.js 
 const inquirer = require('inquirer');
+const path = require('path');
 // https://www.npmjs.com/package/commander
 const program = require('commander');
 https://stackabuse.com/reading-and-writing-yaml-to-a-file-in-node-js-javascript/
@@ -18,9 +19,26 @@ const blankStr = '';
 const configFile = '_config.yml';
 const gemFile = 'Gemfile';
 
+var templateFolder: string;
+var templateName: string;
+
+function execShellCommand(cmd: string) {
+  const exec = require('child_process').exec;
+  return new Promise((resolve, reject) => {
+    exec(cmd, (error, stdout, stderr) => {
+      if (error) {
+        console.warn(error);
+      }
+      resolve(stdout ? stdout : stderr);
+    });
+  });
+}
+
 function fileExists(fileName: string): boolean {
+  let filePath = path.join(process.cwd(), fileName);
+  // console.log(`Validating existence of ${filePath}`);
   try {
-    return fs.existsSync(fileName);
+    return fs.existsSync(filePath);
   } catch (err) {
     console.error(err);
     return false;
@@ -28,10 +46,17 @@ function fileExists(fileName: string): boolean {
 }
 
 function validConfig(): boolean {
+  // console.log('Validating configuration');
   // looking for two files
   if (fileExists(configFile) && fileExists(gemFile)) {
     // Read the template name from the config file
-
+    templateName = getTemplateName();
+    console.log(`Jekyll template: ${templateName}`);
+    if (templateName.length > 0) {
+      templateFolder = getTemplateFolder(templateName);
+    } else {
+      return false;
+    }
   } else {
     return false;
   }
@@ -39,24 +64,27 @@ function validConfig(): boolean {
 }
 
 function getTemplateName(): string {
+  console.log('Processing configuration file');
   try {
     let fileContents = fs.readFileSync(configFile, 'utf8');
     let data = yaml.safeLoad(fileContents);
     if (data) {
-      console.log(data);
       return data.theme;
     } else {
       return blankStr;
     }
   } catch (e) {
-    console.error(`Unable to read config file (${configFile})`);
+    console.log(chalk.red(`\nUnable to read config file (${configFile})`));
     return blankStr;
   }
 }
 
-function getTemplateFolder() {
-  console.log(chalk.yellow('\nValidating template folder'));
-
+//TODO: here!
+getTemplateFolder = async (template: string) {
+  console.log(chalk.yellow('\nValidating template folder'));  
+  var result: any = await execShellCommand(`bundle show ${template}`);
+  console.log(result);
+  return result.toString();
 }
 
 console.log();
