@@ -4,13 +4,19 @@
   "description": "",
   "main": "jekyll-copy.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start" : "tsc && node ./jekyll-copy.js"
   },
   "author": "John M. Wargo",
   "license": "MIT",
   "dependencies": {
+    "boxen": "^4.2.0",
     "chalk": "^4.0.0",
     "commander": "^5.0.0",
-    "inquirer": "^7.1.0"
+    "inquirer": "^7.1.0",
+    "js-yaml": "^3.13.1"
+  },
+  "devDependencies": {
+    "@types/node": "^13.11.1"
   }
 }
