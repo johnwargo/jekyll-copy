@@ -14,8 +14,8 @@ const program = require('commander');
 https://stackabuse.com/reading-and-writing-yaml-to-a-file-in-node-js-javascript/
 const yaml = require('js-yaml')
 
-const appName = 'Jekyll Template File Copy';
-const appAuthor = 'by John M. Wargo (johwargo.com)';
+const appName = 'Jekyll Template File Copy (jcp)';
+const appAuthor = 'by John M. Wargo (https://johwargo.com)';
 const blankStr = '';
 const configFile = '_config.yml';
 const gemFile = 'Gemfile';
@@ -76,6 +76,7 @@ const capitalize = (s: string) => {
 }
 
 function validConfig(): boolean {
+  // TODO: yes, I know this is ugly code. Will fix it later
   // looking for two files
   if (fileExists(configFile) && fileExists(gemFile)) {
     // Read the template name from the config file
@@ -85,13 +86,8 @@ function validConfig(): boolean {
       console.log(`Jekyll project uses the '${capitalize(templateName)}' template`);
       templateFolder = getTemplateFolder(templateName);
       if (templateFolder && templateFolder.length > 0) {
-        console.log(`${capitalize(templateName)} template located at ${templateFolder}`);
-        if (fs.existsSync(templateFolder)) {
-
-          // TODO: HERE
-          console.log(chalk.red('here'));
-        }
-        return fs.existsSync(templateFolder);
+        console.log(`${capitalize(templateName)} template folder: ${templateFolder}`);
+        return fs.existsSync(path.dirname(templateFolder));
       } else {
         return false;
       }
@@ -103,25 +99,27 @@ function validConfig(): boolean {
   }
 }
 
-console.log();
 console.log(boxen(`${appName}\n\n${appAuthor}`, { padding: 1 }));
+console.log();
 
 program.version('0.0.1');
 
 program.command('ls [folder]')
   .description('List Jekyll template folders and files.')
   .action((folder: string = 'current') => {
-    console.log(`Listing files for ${folder} folder`);
+    console.log(`\nListing files for ${folder} folder`);
 
   });
 
 program.command('cp <file>')
   .description('Copy a Jekyll template file to the current location.')
   .action((file: string) => {
-    console.log('executing cp');
+    console.log(`\nCopying ${file} to project folder`);
+
   });
 
 if (validConfig()) {
+  console.log(chalk.green('Configuration is valid'));
   program.parse(process.argv);
 } else {
   console.log(chalk.red('\nInvalid configuration!'));

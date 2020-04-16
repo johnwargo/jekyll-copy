@@ -13,8 +13,8 @@ var path = require('path');
 var program = require('commander');
 https: //stackabuse.com/reading-and-writing-yaml-to-a-file-in-node-js-javascript/
  var yaml = require('js-yaml');
-var appName = 'Jekyll Template File Copy';
-var appAuthor = 'by John M. Wargo (johwargo.com)';
+var appName = 'Jekyll Template File Copy (jcp)';
+var appAuthor = 'by John M. Wargo (https://johwargo.com)';
 var blankStr = '';
 var configFile = '_config.yml';
 var gemFile = 'Gemfile';
@@ -82,11 +82,8 @@ function validConfig() {
             console.log("Jekyll project uses the '" + capitalize(templateName) + "' template");
             templateFolder = getTemplateFolder(templateName);
             if (templateFolder && templateFolder.length > 0) {
-                console.log(capitalize(templateName) + " template located at " + templateFolder);
-                if (fs.existsSync(templateFolder)) {
-                    console.log(chalk.red('here'));
-                }
-                return fs.existsSync(templateFolder);
+                console.log(capitalize(templateName) + " template folder: " + templateFolder);
+                return fs.existsSync(path.dirname(templateFolder));
             }
             else {
                 return false;
@@ -100,21 +97,22 @@ function validConfig() {
         return false;
     }
 }
+console.log(boxen(appName + "\n" + appAuthor, { padding: 1 }));
 console.log();
-console.log(boxen(appName + "\n\n" + appAuthor, { padding: 1 }));
 program.version('0.0.1');
 program.command('ls [folder]')
     .description('List Jekyll template folders and files.')
     .action(function (folder) {
     if (folder === void 0) { folder = 'current'; }
-    console.log("Listing files for " + folder + " folder");
+    console.log("\nListing files for " + folder + " folder");
 });
 program.command('cp <file>')
     .description('Copy a Jekyll template file to the current location.')
     .action(function (file) {
-    console.log('executing cp');
+    console.log("\nCopying " + file + " to project folder");
 });
 if (validConfig()) {
+    console.log(chalk.green('Configuration is valid'));
     program.parse(process.argv);
 }
 else {
