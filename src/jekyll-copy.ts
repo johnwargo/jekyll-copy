@@ -63,14 +63,13 @@ function getTemplateName(): string {
 */
 function getTemplateFolder(template: string) {
   var cmd = `bundle info ${template}`;
-  // console.log(`Executing ${cmd}`);
   var res = cp.execSync(cmd);
   var tmpFolder = res.toString().split('Path: ')[1];
   return tmpFolder;
 }
 
-// https://flaviocopes.com/how-to-uppercase-first-letter-javascript/
 const capitalize = (s: string) => {
+  // https://flaviocopes.com/how-to-uppercase-first-letter-javascript/
   if (typeof s !== 'string') return ''
   return s.charAt(0).toUpperCase() + s.slice(1)
 }
@@ -114,14 +113,14 @@ console.log();
 program.version('0.0.1');
 
 program.command('ls [folder]')
-  .description('List Jekyll template folders and files.')
+  .description('List Jekyll template folders and files')
   .action((folder: string = 'current') => {
     console.log(`\nListing files for ${folder} folder`);
 
   });
 
 program.command('cp <file>')
-  .description('Copy a Jekyll template file to the current location.')
+  .description('Copy a Jekyll template file to the current location')
   .action((file: string) => {
     console.log(`\nCopying ${file} to project folder`);
 
