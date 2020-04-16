@@ -75,7 +75,7 @@ const capitalize = (s: string) => {
 }
 
 function validConfig(): boolean {
-    // looking for two files
+  // looking for two files
   if (fileExists(configFile) && fileExists(gemFile)) {
     // Read the template name from the config file
     // have to leave this in lower case because of the later check for file path
@@ -119,10 +119,55 @@ program.command('ls [folder]')
 
   });
 
-program.command('cp <file>')
+program.command('cp <filePath>')
   .description('Copy a Jekyll template file to the current location')
-  .action((file: string) => {
-    console.log(`\nCopying ${file} to project folder`);
+  .action((filePath: string) => {
+    var sourceFile = path.join(templateFolder, filePath);
+    var destFile = path.join(__dirname, filePath);
+    var destFolder = path.dirname(destFile);
+    console.log(`\nCopying ${sourceFile} to project folder`);
+    // does the source file exist?
+    if (fs.existsSync(sourceFile)) {
+      // Does the target folder exist?      
+      if (!fs.existsSync(destFolder)) {
+        // create the folder
+        try {
+          console.log(`Creating destination folder (${destFolder})`);
+          fs.mkdirSync(destFolder);
+        } catch (err) {
+          console.error(`Unable to create destination folder (${err})`);
+          return;
+        }
+
+      }
+
+      // does the destination file exists?
+      if (fs.existsSync(destFile)) {
+        // Ask the user to overwrite
+
+      } else {
+        // copy the file
+        try {
+          fs.copyFileSync(sourceFile, destFile);
+        } catch (err) {
+          console.error(`Unable to copy file (${err})`);
+          return;
+        }
+      }
+    } else {
+      console.log(chalk.red(`Unable to copy, ${sourceFile} does not exist`));
+    }
+  });
+
+program.command('all')
+  .description('Copy all of the Jekyll template files to the current folder')
+  .action(() => {
+
+  });
+
+program.command('compare')
+  .description('Compare project folder contents with the template folder')
+  .action(() => {
 
   });
 
