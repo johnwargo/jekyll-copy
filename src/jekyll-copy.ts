@@ -89,12 +89,16 @@ function validConfig(): boolean {
         console.log(`${capitalize(templateName)} template folder: ${templateFolder}`);
         return fs.existsSync(path.dirname(templateFolder));
       } else {
+        console.log(chalk.red('Unable to locate template folder'));
         return false;
       }
     } else {
+      console.log(chalk.red('Unable to determine template name'));
       return false;
     }
   } else {
+    console.log(chalk.red('Missing configuration files'));
+    console.log('Make sure you execute this module in a Jekyll project folder before executing the command');
     return false;
   }
 }
@@ -121,7 +125,4 @@ program.command('cp <file>')
 if (validConfig()) {
   console.log(chalk.green('Configuration is valid'));
   program.parse(process.argv);
-} else {
-  console.log(chalk.red('\nInvalid configuration!'));
-  console.log('Make sure the terminal is in a Jekyll project folder before executing the command');
 }
