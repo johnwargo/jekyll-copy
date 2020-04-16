@@ -3,7 +3,8 @@
  */
 
 const boxen = require('boxen');
-var chalk = require('chalk');
+const chalk = require('chalk');
+const cp = require('child_process');
 const fs = require('fs');
 // https://github.com/SBoudrias/Inquirer.js 
 const inquirer = require('inquirer');
@@ -22,18 +23,6 @@ const gemFile = 'Gemfile';
 var templateFolder: string;
 var templateName: string;
 
-function execShellCommand(cmd: string) {
-  const exec = require('child_process').exec;
-  return new Promise((resolve, reject) => {
-    exec(cmd, (error, stdout, stderr) => {
-      if (error) {
-        console.warn(error);
-      }
-      resolve(stdout ? stdout : stderr);
-    });
-  });
-}
-
 function fileExists(fileName: string): boolean {
   let filePath = path.join(process.cwd(), fileName);
   // console.log(`Validating existence of ${filePath}`);
@@ -45,26 +34,8 @@ function fileExists(fileName: string): boolean {
   }
 }
 
-function validConfig(): boolean {
-  // console.log('Validating configuration');
-  // looking for two files
-  if (fileExists(configFile) && fileExists(gemFile)) {
-    // Read the template name from the config file
-    templateName = getTemplateName();
-    console.log(`Jekyll template: ${templateName}`);
-    if (templateName.length > 0) {
-      templateFolder = getTemplateFolder(templateName);
-    } else {
-      return false;
-    }
-  } else {
-    return false;
-  }
-  return false;
-}
-
 function getTemplateName(): string {
-  console.log('Processing configuration file');
+  // console.log('\nProcessing configuration file');
   try {
     let fileContents = fs.readFileSync(configFile, 'utf8');
     let data = yaml.safeLoad(fileContents);
@@ -79,12 +50,57 @@ function getTemplateName(): string {
   }
 }
 
-//TODO: here!
-getTemplateFolder = async (template: string) {
-  console.log(chalk.yellow('\nValidating template folder'));  
-  var result: any = await execShellCommand(`bundle show ${template}`);
-  console.log(result);
-  return result.toString();
+/**
+* execSync returns a buffer which the code converts to a string
+* The string value is a paragraph like this:
+* 
+*   * minima (2.5.1)
+*     Summary: A beautiful, minimal theme for Jekyll.
+*     Homepage: https://github.com/jekyll/minima
+*     Path: D:/Ruby26-x64/lib/ruby/gems/2.6.0/gems/minima-2.5.1
+* 
+* Which the code splits to grab everything from 'Path: ' to the end of the string
+*/
+function getTemplateFolder(template: string) {
+  var cmd = `bundle info ${template}`;
+  // console.log(`Executing ${cmd}`);
+  var res = cp.execSync(cmd);
+  var tmpFolder = res.toString().split('Path: ')[1];
+  return tmpFolder;
+}
+
+// https://flaviocopes.com/how-to-uppercase-first-letter-javascript/
+const capitalize = (s: string) => {
+  if (typeof s !== 'string') return ''
+  return s.charAt(0).toUpperCase() + s.slice(1)
+}
+
+function validConfig(): boolean {
+  // looking for two files
+  if (fileExists(configFile) && fileExists(gemFile)) {
+    // Read the template name from the config file
+    // have to leave this in lower case because of the later check for file path
+    templateName = getTemplateName();
+    if (templateName.length > 0) {
+      console.log(`Jekyll project uses the '${capitalize(templateName)}' template`);
+      templateFolder = getTemplateFolder(templateName);
+      if (templateFolder && templateFolder.length > 0) {
+        console.log(`${capitalize(templateName)} template located at ${templateFolder}`);
+        if (fs.existsSync(templateFolder)) {
+
+          // TODO: HERE
+          console.log(chalk.red('here'));
+        }
+        return fs.existsSync(templateFolder);
+      } else {
+        return false;
+      }
+    } else {
+      return false;
+    }
+  } else {
+    return false;
+  }
 }
 
 console.log();
