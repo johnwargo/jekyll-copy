@@ -76,31 +76,36 @@ const capitalize = (s: string) => {
 }
 
 function validConfig(): boolean {
-  // TODO: yes, I know this is ugly code. Will fix it later
-  // looking for two files
+    // looking for two files
   if (fileExists(configFile) && fileExists(gemFile)) {
     // Read the template name from the config file
     // have to leave this in lower case because of the later check for file path
     templateName = getTemplateName();
-    if (templateName.length > 0) {
+    // do we have a template name?
+    if (templateName && templateName.length > 0) {
       console.log(`Jekyll project uses the '${capitalize(templateName)}' template`);
       templateFolder = getTemplateFolder(templateName);
+      // Do we have a template folder?
       if (templateFolder && templateFolder.length > 0) {
         console.log(`${capitalize(templateName)} template folder: ${templateFolder}`);
-        return fs.existsSync(path.dirname(templateFolder));
+        // does the template folder exist?
+        var theFolder = fs.existsSync(path.dirname(templateFolder));
+        if (theFolder) {
+          return true;
+        } else {
+          console.log(chalk.red('Template folder does not exist'));
+        }
       } else {
         console.log(chalk.red('Unable to locate template folder'));
-        return false;
       }
     } else {
       console.log(chalk.red('Unable to determine template name'));
-      return false;
     }
   } else {
     console.log(chalk.red('Missing configuration files'));
     console.log('Make sure you execute this module in a Jekyll project folder before executing the command');
-    return false;
   }
+  return false;
 }
 
 console.log(boxen(`${appName}\n\n${appAuthor}`, { padding: 1 }));
