@@ -61,13 +61,12 @@ function getTemplateName() {
 */
 function getTemplateFolder(template) {
     var cmd = "bundle info " + template;
-    // console.log(`Executing ${cmd}`);
     var res = cp.execSync(cmd);
     var tmpFolder = res.toString().split('Path: ')[1];
     return tmpFolder;
 }
-// https://flaviocopes.com/how-to-uppercase-first-letter-javascript/
 var capitalize = function (s) {
+    // https://flaviocopes.com/how-to-uppercase-first-letter-javascript/
     if (typeof s !== 'string')
         return '';
     return s.charAt(0).toUpperCase() + s.slice(1);
@@ -78,44 +77,51 @@ function validConfig() {
         // Read the template name from the config file
         // have to leave this in lower case because of the later check for file path
         templateName = getTemplateName();
-        if (templateName.length > 0) {
+        // do we have a template name?
+        if (templateName && templateName.length > 0) {
             console.log("Jekyll project uses the '" + capitalize(templateName) + "' template");
             templateFolder = getTemplateFolder(templateName);
+            // Do we have a template folder?
             if (templateFolder && templateFolder.length > 0) {
                 console.log(capitalize(templateName) + " template folder: " + templateFolder);
-                return fs.existsSync(path.dirname(templateFolder));
+                // does the template folder exist?
+                var theFolder = fs.existsSync(path.dirname(templateFolder));
+                if (theFolder) {
+                    return true;
+                }
+                else {
+                    console.log(chalk.red('Template folder does not exist'));
+                }
             }
             else {
-                return false;
+                console.log(chalk.red('Unable to locate template folder'));
             }
         }
         else {
-            return false;
+            console.log(chalk.red('Unable to determine template name'));
         }
     }
     else {
-        return false;
+        console.log(chalk.red('Missing configuration files'));
+        console.log('Make sure you execute this module in a Jekyll project folder before executing the command');
     }
+    return false;
 }
-console.log(boxen(appName + "\n" + appAuthor, { padding: 1 }));
+console.log(boxen(appName + "\n\n" + appAuthor, { padding: 1 }));
 console.log();
 program.version('0.0.1');
 program.command('ls [folder]')
-    .description('List Jekyll template folders and files.')
+    .description('List Jekyll template folders and files')
     .action(function (folder) {
     if (folder === void 0) { folder = 'current'; }
     console.log("\nListing files for " + folder + " folder");
 });
 program.command('cp <file>')
-    .description('Copy a Jekyll template file to the current location.')
+    .description('Copy a Jekyll template file to the current location')
     .action(function (file) {
     console.log("\nCopying " + file + " to project folder");
 });
 if (validConfig()) {
     console.log(chalk.green('Configuration is valid'));
     program.parse(process.argv);
-}
-else {
-    console.log(chalk.red('\nInvalid configuration!'));
-    console.log('Make sure the terminal is in a Jekyll project folder before executing the command');
 }
