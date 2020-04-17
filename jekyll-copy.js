@@ -20,6 +20,7 @@ var configFile = '_config.yml';
 var gemFile = 'Gemfile';
 var templateFolder;
 var templateName;
+var debugMode = false;
 function fileExists(fileName) {
     var filePath = path.join(process.cwd(), fileName);
     // console.log(`Validating existence of ${filePath}`);
@@ -32,7 +33,7 @@ function fileExists(fileName) {
     }
 }
 function getTemplateName() {
-    // console.log('\nProcessing configuration file');
+    // console.log('Processing configuration file');
     try {
         var fileContents = fs.readFileSync(configFile, 'utf8');
         var data = yaml.safeLoad(fileContents);
@@ -44,7 +45,7 @@ function getTemplateName() {
         }
     }
     catch (e) {
-        console.log(chalk.red("\nUnable to read config file (" + configFile + ")"));
+        console.log(chalk.red("Unable to read config file (" + configFile + ")"));
         return blankStr;
     }
 }
@@ -72,6 +73,7 @@ var capitalize = function (s) {
     return s.charAt(0).toUpperCase() + s.slice(1);
 };
 function validConfig() {
+    console.log('Validating Jekyll configuration');
     // looking for two files
     if (fileExists(configFile) && fileExists(gemFile)) {
         // Read the template name from the config file
@@ -107,21 +109,73 @@ function validConfig() {
     }
     return false;
 }
+function copyFile(source, dest) {
+    var destFolder = path.dirname(dest);
+    console.log("Copying " + source + " to project folder");
+    // does the source file exist?
+    if (fs.existsSync(source)) {
+        // Does the target folder exist?      
+        if (!fs.existsSync(dest)) {
+            // create the folder
+            try {
+                console.log("Creating destination folder (" + dest + ")");
+                fs.mkdirSync(destFolder);
+            }
+            catch (err) {
+                console.error("Unable to create destination folder (" + err + ")");
+                return false;
+            }
+        }
+        // does the destination file exists?
+        if (fs.existsSync(dest)) {
+            // Ask the user to overwrite
+        }
+        else {
+            // copy the file
+            try {
+                fs.copyFileSync(source, dest);
+            }
+            catch (err) {
+                console.error("Unable to copy file (" + err + ")");
+                return false;
+            }
+        }
+    }
+    else {
+        console.log(chalk.red("Unable to copy, " + source + " does not exist"));
+        return false;
+    }
+}
 console.log(boxen(appName + "\n\n" + appAuthor, { padding: 1 }));
-console.log();
 program.version('0.0.1');
+program.option('-d, --debug', 'Output extra information during operation');
 program.command('ls [folder]')
     .description('List Jekyll template folders and files')
     .action(function (folder) {
     if (folder === void 0) { folder = 'current'; }
-    console.log("\nListing files for " + folder + " folder");
+    console.log("Listing files for " + folder + " folder");
 });
-program.command('cp <file>')
+program.command('cp <filePath>')
     .description('Copy a Jekyll template file to the current location')
-    .action(function (file) {
-    console.log("\nCopying " + file + " to project folder");
+    .action(function (filePath) {
+    console.log("Copying Jekyll file from " + filePath);
+    // copyFile(path.join(templateFolder, filePath), path.join(__dirname, filePath));
+});
+program.command('all')
+    .description('Copy all of the Jekyll template files to the current folder')
+    .action(function () {
+    console.log('Copying all template files');
+});
+program.command('compare')
+    .description('Compare project folder contents with the template folder')
+    .action(function () {
 });
 if (validConfig()) {
+    // TODO: Figure out why there's an extra carriage return here
     console.log(chalk.green('Configuration is valid'));
     program.parse(process.argv);
+    if (program.debug) {
+        console.log(chalk.yellow(JSON.stringify(program.opts())));
+        debugMode = program.debug;
+    }
 }
