@@ -155,7 +155,24 @@ program.option('-d, --debug', 'Output extra information during operation');
 program.command('ls [folder]')
   .description('List Jekyll template folders and files')
   .action((folder: string = 'current') => {
+    // https://flaviocopes.com/how-to-get-files-names/
     console.log(`Listing files for ${folder} folder`);
+
+    // const dir = '/Users/flavio/folder'
+    // const files = fs.readdirSync(dir)
+
+    // for (file of files) {
+    //   console.log(file)
+    // }
+
+    // Once you have a file reference, you can get its details using
+
+    // const path = require('path')
+
+    // //...
+
+    // //inside the `for` loop
+    // const stat = fs.lstatSync(path.join(dir, file))
 
   });
 
@@ -187,6 +204,6 @@ if (validConfig()) {
   if (program.debug) {
     console.log(chalk.yellow(JSON.stringify(program.opts())));
     debugMode = program.debug;
-  } 
+  }
 
 }
