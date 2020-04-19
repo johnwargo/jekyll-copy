@@ -2,19 +2,20 @@
   "name": "jekyll-copy",
   "version": "1.0.0",
   "description": "",
-  "main": "jekyll-copy.js",
+  "main": "jcp.js",
   "bin": {
-    "jcp": "./jekyll-copy.js"
+    "jcp": "./jcp.js"
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "tsc && node ./jekyll-copy.js"
+    "start": "tsc && node ./jcp.js"
   },
   "author": "John M. Wargo",
   "license": "MIT",
   "dependencies": {
     "boxen": "^4.2.0",
     "chalk": "^4.0.0",
+    "cli-logger": "^0.5.40",
     "commander": "^5.0.0",
     "inquirer": "^7.1.0",
     "js-yaml": "^3.13.1"
