@@ -67,7 +67,7 @@ Listing contents of D:/Ruby26-x64/lib/ruby/gems/2.6.0/gems/minima-2.5.1:
 
 You can also pass a template folder name into the command like this:
 
-```shell 
+```shell
 jcp ls _includes
 ```
 
@@ -101,7 +101,7 @@ Listing contents of D:\Ruby26-x64\lib\ruby\gems\2.6.0\gems\minima-2.5.1\_include
 
 Once you've used the `ls` command to identify the template file you want copied to your project folder, you copy it using the following command:
 
-```shell 
+```shell
 jcp cp <file_path>
 ```
 
@@ -132,3 +132,6 @@ Copying header.html
 File successfully copied
 ```
 
+### Conclusion
+
+That's it, that's what this module does, let me know if you find it useful or if you have features to suggest. Use the Issues tab to report problems.
