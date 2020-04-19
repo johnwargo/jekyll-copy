@@ -35,7 +35,7 @@ Let's see them in action!
 
 ### ls
 
-I can never remember which template folder contains which files, so I added the `ls` command to help you view template folder contents to find the file you want to copy.
+I can never remember which template folder contains which files, so I added the `ls` command to help me view template folder contents to find the file I want to copy. The command supports two forms.
 
 To list all of the files in the template's root folder, execute the following command:
 
