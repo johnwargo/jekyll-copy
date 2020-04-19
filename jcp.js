@@ -39,11 +39,11 @@ function isValidConfig() {
         templateName = getTemplateName();
         // do we have a template name?
         if (templateName && templateName.length > 0) {
-            log.info("Jekyll project uses the '" + capitalize(templateName) + "' template");
+            log.info('Jekyll project uses the ' + chalk.yellow(capitalize(templateName)) + ' template');
             templateFolder = getTemplateFolder(templateName);
             // Do we have a template folder?
             if (templateFolder && templateFolder.length > 0) {
-                log.info(capitalize(templateName) + " template folder: " + templateFolder);
+                log.info(chalk.yellow(capitalize(templateName) + " template folder: ") + templateFolder);
                 // does the template folder exist?
                 var theFolder = fs.existsSync(path.dirname(templateFolder));
                 if (theFolder) {
@@ -207,7 +207,7 @@ function copyFile(sourceFile, dest) {
         if (!fs.existsSync(destFolder)) {
             // create the folder
             try {
-                log.info('Creating destination folder');
+                log.info("Creating destination folder: " + destFolder);
                 fs.mkdirSync(destFolder);
             }
             catch (err) {
@@ -225,7 +225,7 @@ function copyFile(sourceFile, dest) {
         }
         else {
             // copy the file
-            log.info('Copying the file');
+            log.info("Copying " + path.basename(dest));
             try {
                 fs.copyFileSync(sourceFile, dest);
                 log.info(chalk.green('File successfully copied'));
@@ -248,6 +248,7 @@ program.command('ls [folder]')
     .description('List Jekyll template folders and files')
     .action(function (folder) {
     setupLogger();
+    log.info(chalk.yellow('Command: ') + 'List Folder Contents');
     var target = folder ? path.join(templateFolder, folder) : templateFolder;
     log.debug("Target: " + target + " ");
     if (fileExists(target)) {
@@ -276,7 +277,7 @@ program.command('cp <filePath>')
     .description('Copy a Jekyll template file to the current location')
     .action(function (filePath) {
     setupLogger();
-    log.info('Copy Jekyll template file');
+    log.info(chalk.yellow('Command: ') + 'Copy File');
     var source = path.join(templateFolder, filePath);
     log.debug("Source: " + source + " ");
     var dest = path.join(__dirname, filePath);
