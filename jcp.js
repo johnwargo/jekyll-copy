@@ -2,7 +2,7 @@
 /**
  * Jekyll Copy Module
  */
-// TODO: implement conditional logging
+// TODO: Read version from the package.json file
 var boxen = require('boxen');
 var chalk = require('chalk');
 var logger = require('cli-logger');
@@ -21,10 +21,7 @@ var templateFolder;
 var templateName;
 var log = logger();
 function setupLogger() {
-    // TODO: Set this before publishing
-    // const conf = program.debug ? log.DEBUG : log.INFO;
-    // const conf = log.DEBUG;
-    var conf = log.INFO;
+    var conf = program.debug ? log.DEBUG : log.INFO;
     log.level(conf);
     log.debug(program.opts());
 }

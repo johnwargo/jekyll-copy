@@ -1,5 +1,8 @@
 # Folders
 node_modules/
+_layouts/
+_includes/
+_sass/
 
 # Files
 package-lock.json
