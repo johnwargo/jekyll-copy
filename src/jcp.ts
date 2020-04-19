@@ -17,7 +17,6 @@ https://stackabuse.com/reading-and-writing-yaml-to-a-file-in-node-js-javascript/
 const yaml = require('js-yaml')
 
 const appName = 'Jekyll Template File Copy (jcp)';
-const appAuthor = 'by John M. Wargo (https://johwargo.com)';
 const blankStr = '';
 const configFile = '_config.yml';
 const gemFile = 'Gemfile';
@@ -153,7 +152,6 @@ function getEntryType(filePath: string): string {
   }
 }
 
-
 function getFolderContents(folder: string, foldersOnly: boolean = false): string[] {
   log.debug(`jcp: getFolderContents(${folder}, ${foldersOnly})`);
   let contents: string[] = [];
@@ -193,46 +191,51 @@ const capitalize = (s: string) => {
   return s.charAt(0).toUpperCase() + s.slice(1)
 }
 
-function copyFile(source: string, dest: string) {
-  log.debug(`jcp: (${source}, ${dest})`);
+function copyFile(sourceFile: string, dest: string) {
+  log.debug(`jcp: copyFile(${sourceFile}, ${dest})`);
   var destFolder = path.dirname(dest);
-  console.log(`Copying ${source} to project folder`);
+  log.info(chalk.yellow('Source: ') + sourceFile);
+  log.info(chalk.yellow('Destination: ') + destFolder);
   // does the source file exist?
-  if (fs.existsSync(source)) {
+  if (fs.existsSync(sourceFile)) {
+    log.debug('Source file exists');
     // Does the target folder exist?      
-    if (!fs.existsSync(dest)) {
+    if (!fs.existsSync(destFolder)) {
       // create the folder
       try {
-        log.info(`Creating destination folder(${dest})`);
+        log.info('Creating destination folder');
         fs.mkdirSync(destFolder);
       } catch (err) {
-        log.error(`Unable to create destination folder(${err})`);
-        return false;
+        log.error(`Unable to create destination folder (${err})`);
+        return;
       }
     }
+    log.debug('Target folder exists');
 
     // does the destination file exists?
     if (fs.existsSync(dest)) {
-      // Ask the user to overwrite
-      // TODO: Finish this code
-
+      // TODO: Add option to overwrite
+      // log.info('Destination file already exists');
+      log.info(chalk.red('Copy aborted: ') + 'File already exists at destination');
+      return;
     } else {
       // copy the file
+      log.info('Copying the file');
       try {
-        fs.copyFileSync(source, dest);
+        fs.copyFileSync(sourceFile, dest);
+        log.info(chalk.green('File successfully copied'));
       } catch (err) {
         log.error(`Unable to copy file(${err})`);
-        return false;
+        return;
       }
     }
   } else {
-    log.log(chalk.red(`Unable to copy, ${source} does not exist`));
-    return false;
+    log.log(chalk.red(`Unable to copy, ${sourceFile} does not exist`));
+    return;
   }
 }
 
 console.log(boxen(appName, { padding: 1 }));
-console.log(appAuthor + '\n');
 
 program.version('0.0.1');
 
@@ -265,7 +268,7 @@ program.command('cp <filePath>')
   .description('Copy a Jekyll template file to the current location')
   .action((filePath: string) => {
     setupLogger();
-    log.info(`Copying Jekyll file from ${filePath} `);
+    log.info('Copy Jekyll template file');
     let source = path.join(templateFolder, filePath);
     log.debug(`Source: ${source} `);
     let dest = path.join(__dirname, filePath);
