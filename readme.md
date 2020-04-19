@@ -31,3 +31,34 @@ The module includes two commands you can use to work with your Jekyll template f
 + `ls` - List the contents of a Jekyll project's current template folder.
 + `cp` - Copy a Jekyll project's template file to the project folder.
 
+Let's see them in action!
+
+I can never remember which template folder contains which files, so I added the `ls` command to help you view template folder contents to find the file you want to copy.
+
+To list all of the files in the template's root folder, execute the following command:
+
+```shell
+jcp ls
+```
+
+The module will read the current project's `config.yml` file to determine which Jekyll template is in play, then query the OS for the template folder location using `bundle info <template_name>`
+
+```text
+┌────────────────────────────┐
+│                            │
+│   Jekyll File Copy (jcp)   │
+│                            │
+└────────────────────────────┘
+Validating Jekyll configuration
+Jekyll project uses the Minima template
+Minima template folder: D:/Ruby26-x64/lib/ruby/gems/2.6.0/gems/minima-2.5.1
+Command: List Folder Contents
+Listing contents of D:/Ruby26-x64/lib/ruby/gems/2.6.0/gems/minima-2.5.1:
+
+<directory> assets
+<file>      LICENSE.txt
+<file>      README.md
+<directory> _includes
+<directory> _layouts
+<directory> _sass
+```
