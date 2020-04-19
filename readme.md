@@ -71,6 +71,8 @@ You can also pass a template folder name into the command like this:
 jcp ls _includes
 ```
 
+In this case, the module will list all of the files in the provided folder.
+
 ```text
 ┌────────────────────────────┐
 │                            │
@@ -94,6 +96,7 @@ Listing contents of D:\Ruby26-x64\lib\ruby\gems\2.6.0\gems\minima-2.5.1\_include
 <file>      icon-twitter.svg
 <file>      social.html
 ```
+
 
 
 ### cp
