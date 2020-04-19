@@ -33,6 +33,8 @@ The module includes two commands you can use to work with your Jekyll template f
 
 Let's see them in action!
 
+### ls
+
 I can never remember which template folder contains which files, so I added the `ls` command to help you view template folder contents to find the file you want to copy.
 
 To list all of the files in the template's root folder, execute the following command:
@@ -41,7 +43,7 @@ To list all of the files in the template's root folder, execute the following co
 jcp ls
 ```
 
-The module will read the current project's `config.yml` file to determine which Jekyll template is in play, then query the OS for the template folder location using `bundle info <template_name>`
+The module will read the current project's `config.yml` file to determine which Jekyll template is in play, then query the OS for the template folder location by executing `bundle info <template_name>`. When the command executes, it outputs the template root folder contents as shown below:
 
 ```text
 ┌────────────────────────────┐
@@ -62,3 +64,37 @@ Listing contents of D:/Ruby26-x64/lib/ruby/gems/2.6.0/gems/minima-2.5.1:
 <directory> _layouts
 <directory> _sass
 ```
+
+You can also pass a template folder name into the command like this:
+
+```shell 
+jcp ls _includes
+```
+
+```text
+┌────────────────────────────┐
+│                            │
+│   Jekyll File Copy (jcp)   │
+│                            │
+└────────────────────────────┘
+Validating Jekyll configuration
+Jekyll project uses the Minima template
+Minima template folder: D:/Ruby26-x64/lib/ruby/gems/2.6.0/gems/minima-2.5.1
+Command: List Folder Contents
+Listing contents of D:\Ruby26-x64\lib\ruby\gems\2.6.0\gems\minima-2.5.1\_includes:
+
+<file>      disqus_comments.html
+<file>      footer.html
+<file>      google-analytics.html
+<file>      head.html
+<file>      header.html
+<file>      icon-github.html
+<file>      icon-github.svg
+<file>      icon-twitter.html
+<file>      icon-twitter.svg
+<file>      social.html
+```
+
+
+### cp
+
