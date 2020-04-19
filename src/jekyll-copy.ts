@@ -22,6 +22,7 @@ const gemFile = 'Gemfile';
 
 var templateFolder: string;
 var templateName: string;
+// TODO: implement conditional logging
 var debugMode = false;
 
 function isValidConfig(): boolean {
@@ -79,7 +80,7 @@ function targetFileExists(fileName: string): boolean {
   }
 }
 
-function fileExists(filePath: string): boolean {  
+function fileExists(filePath: string): boolean {
   try {
     return fs.existsSync(filePath);
   } catch (err) {
@@ -116,6 +117,7 @@ function getTemplateName(): string {
 * Which the code splits to grab everything from 'Path: ' to the end of the string
 */
 function getTemplateFolder(template: string) {
+  // console.log('Jekyll-Copy: getTemplateFolder');
   var cmd = `bundle info ${template}`;
   var res = cp.execSync(cmd);
   // Template folder (today anyway) is the end of the string, after the 'Path: '
@@ -125,6 +127,7 @@ function getTemplateFolder(template: string) {
 }
 
 function getEntryType(filePath: string): string {
+  // console.log('Jekyll-Copy: getEntryType');  
   const unknownString = '<unknown>   ';
   try {
     const stat = fs.lstatSync(filePath);
@@ -139,6 +142,7 @@ function getEntryType(filePath: string): string {
 
 
 function getFolderContents(folder: string, foldersOnly: boolean = false): string[] {
+  // console.log('Jekyll-Copy: getFolderContents');
   let contents: string[] = [];
   try {
     const files = fs.readdirSync(folder)
@@ -177,6 +181,7 @@ const capitalize = (s: string) => {
 }
 
 function copyFile(source: string, dest: string) {
+  // console.log('Jekyll-Copy: copyFile()');
   var destFolder = path.dirname(dest);
   console.log(`Copying ${source} to project folder`);
   // does the source file exist?
@@ -229,9 +234,7 @@ program.command('ls [folder]')
         console.log(`Listing contents of ${target}:\n`);
         let contents: string[] = getFolderContents(target);
         if (contents) {
-          for (let entry of contents) {
-            console.log(entry);
-          }
+          for (let entry of contents) console.log(entry);
         } else {
           console.log(chalk.yellow(`Unable to read contents of ${target}`));
         }
@@ -241,7 +244,6 @@ program.command('ls [folder]')
     } else {
       console.log(chalk.red('Target does not exist'));
     }
-
   });
 
 program.command('cp <filePath>')
@@ -251,18 +253,18 @@ program.command('cp <filePath>')
     // copyFile(path.join(templateFolder, filePath), path.join(__dirname, filePath));
   });
 
-program.command('all')
-  .description('Copy all of the Jekyll template files to the current folder')
-  .action(() => {
-    console.log('Copying all template files');
+// program.command('all')
+//   .description('Copy all of the Jekyll template files to the current folder')
+//   .action(() => {
+//     console.log('Copying all template files');
 
-  });
+//   });
 
-program.command('compare')
-  .description('Compare project folder contents with the template folder')
-  .action(() => {
+// program.command('compare')
+//   .description('Compare project folder contents with the template folder')
+//   .action(() => {
 
-  });
+//   });
 
 
 if (isValidConfig()) {

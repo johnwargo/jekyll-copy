@@ -20,6 +20,7 @@ var configFile = '_config.yml';
 var gemFile = 'Gemfile';
 var templateFolder;
 var templateName;
+// TODO: implement conditional logging
 var debugMode = false;
 function isValidConfig() {
     console.log('Validating Jekyll configuration');
@@ -117,6 +118,7 @@ function getTemplateName() {
 * Which the code splits to grab everything from 'Path: ' to the end of the string
 */
 function getTemplateFolder(template) {
+    // console.log('Jekyll-Copy: getTemplateFolder');
     var cmd = "bundle info " + template;
     var res = cp.execSync(cmd);
     // Template folder (today anyway) is the end of the string, after the 'Path: '
@@ -125,6 +127,7 @@ function getTemplateFolder(template) {
     return tmpFolder.trim();
 }
 function getEntryType(filePath) {
+    // console.log('Jekyll-Copy: getEntryType');  
     var unknownString = '<unknown>   ';
     try {
         var stat = fs.lstatSync(filePath);
@@ -141,6 +144,7 @@ function getEntryType(filePath) {
 }
 function getFolderContents(folder, foldersOnly) {
     if (foldersOnly === void 0) { foldersOnly = false; }
+    // console.log('Jekyll-Copy: getFolderContents');
     var contents = [];
     try {
         var files = fs.readdirSync(folder);
@@ -182,6 +186,7 @@ var capitalize = function (s) {
     return s.charAt(0).toUpperCase() + s.slice(1);
 };
 function copyFile(source, dest) {
+    // console.log('Jekyll-Copy: copyFile()');
     var destFolder = path.dirname(dest);
     console.log("Copying " + source + " to project folder");
     // does the source file exist?
@@ -254,15 +259,15 @@ program.command('cp <filePath>')
     console.log("Copying Jekyll file from " + filePath);
     // copyFile(path.join(templateFolder, filePath), path.join(__dirname, filePath));
 });
-program.command('all')
-    .description('Copy all of the Jekyll template files to the current folder')
-    .action(function () {
-    console.log('Copying all template files');
-});
-program.command('compare')
-    .description('Compare project folder contents with the template folder')
-    .action(function () {
-});
+// program.command('all')
+//   .description('Copy all of the Jekyll template files to the current folder')
+//   .action(() => {
+//     console.log('Copying all template files');
+//   });
+// program.command('compare')
+//   .description('Compare project folder contents with the template folder')
+//   .action(() => {
+//   });
 if (isValidConfig()) {
     // TODO: Figure out why there's an extra carriage return here
     console.log(chalk.green('Configuration is valid\n'));
