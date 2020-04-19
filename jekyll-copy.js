@@ -20,6 +20,12 @@ var gemFile = 'Gemfile';
 var templateFolder;
 var templateName;
 var log = logger();
+var capitalize = function (s) {
+    // https://flaviocopes.com/how-to-uppercase-first-letter-javascript/
+    if (typeof s !== 'string')
+        return '';
+    return s.charAt(0).toUpperCase() + s.slice(1);
+};
 function setupLogger() {
     var conf = program.debug ? log.DEBUG : log.INFO;
     log.level(conf);
@@ -184,12 +190,6 @@ function getFolderContents(folder, foldersOnly) {
     }
     return [];
 }
-var capitalize = function (s) {
-    // https://flaviocopes.com/how-to-uppercase-first-letter-javascript/
-    if (typeof s !== 'string')
-        return '';
-    return s.charAt(0).toUpperCase() + s.slice(1);
-};
 function copyFile(sourceFile, dest) {
     log.debug("jcp: copyFile(" + sourceFile + ", " + dest + ")");
     var destFolder = path.dirname(dest);
@@ -213,7 +213,7 @@ function copyFile(sourceFile, dest) {
         log.debug('Target folder exists');
         // does the destination file exists?
         if (fs.existsSync(dest)) {
-            // TODO: Add option to overwrite
+            // TODO: Add option to overwrite existing file, perhaps with command line option
             // log.info('Destination file already exists');
             log.info(chalk.red('Copy aborted: ') + 'File already exists at destination');
             return;
@@ -236,6 +236,7 @@ function copyFile(sourceFile, dest) {
         return;
     }
 }
+// Opening window
 console.log(boxen(appName, { padding: 1 }));
 program.version('0.0.1');
 program.option('-d, --debug', 'Output extra information during operation');
