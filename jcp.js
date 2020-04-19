@@ -8,8 +8,6 @@ var chalk = require('chalk');
 var logger = require('cli-logger');
 var cp = require('child_process');
 var fs = require('fs');
-// https://github.com/SBoudrias/Inquirer.js 
-var inquirer = require('inquirer');
 var path = require('path');
 // https://www.npmjs.com/package/commander
 var program = require('commander');

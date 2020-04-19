@@ -17,7 +17,6 @@
     "chalk": "^4.0.0",
     "cli-logger": "^0.5.40",
     "commander": "^5.0.0",
-    "inquirer": "^7.1.0",
     "js-yaml": "^3.13.1"
   },
   "devDependencies": {
