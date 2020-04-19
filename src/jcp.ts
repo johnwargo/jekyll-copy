@@ -1,3 +1,4 @@
+#!/usr/bin/env node
 /**
  * Jekyll Copy Module
  */
@@ -23,6 +24,12 @@ var templateFolder: string;
 var templateName: string;
 
 var log = logger();
+
+const capitalize = (s: string) => {
+  // https://flaviocopes.com/how-to-uppercase-first-letter-javascript/
+  if (typeof s !== 'string') return ''
+  return s.charAt(0).toUpperCase() + s.slice(1)
+}
 
 function setupLogger() {  
   const conf = program.debug ? log.DEBUG : log.INFO;  
@@ -180,12 +187,6 @@ function getFolderContents(folder: string, foldersOnly: boolean = false): string
   return [];
 }
 
-const capitalize = (s: string) => {
-  // https://flaviocopes.com/how-to-uppercase-first-letter-javascript/
-  if (typeof s !== 'string') return ''
-  return s.charAt(0).toUpperCase() + s.slice(1)
-}
-
 function copyFile(sourceFile: string, dest: string) {
   log.debug(`jcp: copyFile(${sourceFile}, ${dest})`);
   var destFolder = path.dirname(dest);
@@ -209,7 +210,7 @@ function copyFile(sourceFile: string, dest: string) {
 
     // does the destination file exists?
     if (fs.existsSync(dest)) {
-      // TODO: Add option to overwrite
+      // TODO: Add option to overwrite existing file, perhaps with command line option
       // log.info('Destination file already exists');
       log.info(chalk.red('Copy aborted: ') + 'File already exists at destination');
       return;
@@ -230,12 +231,11 @@ function copyFile(sourceFile: string, dest: string) {
   }
 }
 
+// Opening window
 console.log(boxen(appName, { padding: 1 }));
 
 program.version('0.0.1');
-
 program.option('-d, --debug', 'Output extra information during operation');
-
 program.command('ls [folder]')
   .description('List Jekyll template folders and files')
   .action((folder: string) => {
@@ -259,7 +259,6 @@ program.command('ls [folder]')
       log.error(chalk.red('Target does not exist'));
     }
   });
-
 program.command('cp <filePath>')
   .description('Copy a Jekyll template file to the current location')
   .action((filePath: string) => {
@@ -291,7 +290,6 @@ program.command('cp <filePath>')
 // log.info('comparing files);
 
 //   });
-
 
 if (isValidConfig()) {
   log.debug(chalk.green('Configuration is valid\n'));
