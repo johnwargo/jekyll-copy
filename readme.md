@@ -10,7 +10,7 @@ According to the Jekyll documentation:
 
 **Note:** The command listed in that documentation quote is actually incorrect, the Bundler team [deprecated](https://github.com/rubygems/bundler/blob/master/CHANGELOG.md#210pre1-august-28-2019) the `show` command, so the current way to do this is `bundle info minima`. You're welcome.
 
-This created a problem for me (and many other developers, I imagine) as I regularly needed to modify template files for my Jekyll projects and could never remember where to find them. Yes, I could go to the Jekyll documentation reference shown above and type in `bundle show minima` but that's extra work and I also can't always remember what template I'm using for the project, so I'd have to look that up as well.
+This created a problem for me (and many other developers, I imagine) as I regularly needed to modify template files for my Jekyll projects and could never remember where to find them. Yes, I could go to the Jekyll documentation reference shown above and type in `bundle show <template_name>` but that's extra work and I also can't always remember what template I'm using for the project, so I'd have to look that up as well.
 
 This module simplifies the process of copying Jekyll theme files into your current project folder so you can modify them to suit your project needs.
 
@@ -71,7 +71,7 @@ You can also pass a template folder name into the command like this:
 jcp ls _includes
 ```
 
-In this case, the module will list all of the files in the provided folder.
+In this example, the module will list all of the files in the provided folder:
 
 ```text
 ┌────────────────────────────┐
@@ -97,7 +97,38 @@ Listing contents of D:\Ruby26-x64\lib\ruby\gems\2.6.0\gems\minima-2.5.1\_include
 <file>      social.html
 ```
 
-
-
 ### cp
+
+Once you've used the `ls` command to identify the template file you want copied to your project folder, you copy it using the following command:
+
+```shell 
+jcp cp <file_path>
+```
+
+In this example, `<file_path>` refers to the relative path pointing to the file in the template folder.
+
+For example, using the previous `ls` examples, if I wanted to copy the template's header file to my project folder (so I could modify it for my specific needs), I would execute the following command:
+
+```shell
+jcp cp _includes/header.html
+```
+
+The module validates the project config, then copies the file while outputting the following:
+
+```text
+┌────────────────────────────┐
+│                            │
+│   Jekyll File Copy (jcp)   │
+│                            │
+└────────────────────────────┘
+Validating Jekyll configuration
+Jekyll project uses the Minima template
+Minima template folder: D:/Ruby26-x64/lib/ruby/gems/2.6.0/gems/minima-2.5.1
+Command: Copy File
+Source: D:\Ruby26-x64\lib\ruby\gems\2.6.0\gems\minima-2.5.1\_includes\header.html
+Destination: D:\dev\node\jekyll-copy\_includes
+Creating destination folder: D:\dev\node\jekyll-copy\_includes
+Copying header.html
+File successfully copied
+```
 
