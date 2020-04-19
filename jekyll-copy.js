@@ -1,3 +1,4 @@
+#!/usr/bin/env node
 "use strict";
 /**
  * Jekyll Copy Module
@@ -13,7 +14,7 @@ var path = require('path');
 var program = require('commander');
 https: //stackabuse.com/reading-and-writing-yaml-to-a-file-in-node-js-javascript/
  var yaml = require('js-yaml');
-var appName = 'Jekyll Template File Copy (jcp)';
+var appName = 'Jekyll File Copy (jcp)';
 var blankStr = '';
 var configFile = '_config.yml';
 var gemFile = 'Gemfile';
