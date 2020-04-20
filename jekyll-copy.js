@@ -238,8 +238,11 @@ function copyFile(sourceFile, dest) {
 }
 // Opening window
 console.log(boxen(appName, { padding: 1 }));
+// Get the version number from the package.json file
 program.version(packageDotJSON.version);
+// Debug Mode, controls output through logger
 program.option('-d, --debug', 'Output extra information during operation');
+// program.option('-f, --force', 'Force file overwrite');
 program.command('ls [folder]')
     .description('List Jekyll template folders and files')
     .action(function (folder) {
@@ -288,14 +291,9 @@ program.command('cp <filePath>')
 // program.command('all')
 //   .description('Copy all of the Jekyll template files to the current folder')
 //   .action(() => {
-//setupLogger();
-//     log.info('Copying all template files');
-//   });
-// program.command('compare')
-//   .description('Compare project folder contents with the template folder')
-//   .action(() => {
-// setupLogger();
-// log.info('comparing files);
+//     setupLogger();
+//     log.info(chalk.yellow('Command: ') + 'Copy all template Files');
+// 
 //   });
 if (isValidConfig()) {
     log.debug(chalk.green('Configuration is valid\n'));
