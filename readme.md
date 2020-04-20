@@ -10,7 +10,7 @@ According to the Jekyll documentation:
 
 **Note:** The command listed in that documentation quote is actually incorrect, the Bundler team [deprecated](https://github.com/rubygems/bundler/blob/master/CHANGELOG.md#210pre1-august-28-2019) the `show` command, so the current way to do this is `bundle info minima`. You're welcome.
 
-This created a problem for me (and many other developers, I imagine) as I regularly needed to modify template files for my Jekyll projects and could never remember where to find them. Yes, I could go to the Jekyll documentation reference shown above and type in `bundle show <template_name>` but that's extra work and I also can't always remember what template I'm using for the project, so I'd have to look that up as well.
+This created a problem for me (and many other developers, I imagine) as I regularly needed to modify template files for my Jekyll projects and could never remember where to find them. Yes, I could go to the Jekyll documentation reference shown above and type in `bundle info <template_name>` but that's extra work and I also can't always remember what template I'm using for the project, so I'd have to look that up as well.
 
 This module simplifies the process of copying Jekyll theme files into your current project folder so you can modify them to suit your project needs.
 
