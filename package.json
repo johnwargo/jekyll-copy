@@ -1,6 +1,6 @@
 {
   "name": "jekyll-copy",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "description": "A simple CLI command you can use to copy Jekyll template files from the template's installation file to the current project folder",
   "author": {
     "name": "John M. Wargo",
