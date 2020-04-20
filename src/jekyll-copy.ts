@@ -2,7 +2,6 @@
 /**
  * Jekyll Copy Module
  */
-// TODO: Read version from the package.json file
 
 const boxen = require('boxen');
 const chalk = require('chalk');
@@ -10,6 +9,8 @@ const logger = require('cli-logger');
 const cp = require('child_process');
 const fs = require('fs');
 const path = require('path');
+// https://stackoverflow.com/questions/9153571/is-there-a-way-to-get-version-from-package-json-in-nodejs-code
+const packageDotJSON = require('./package.json');
 // https://www.npmjs.com/package/commander
 const program = require('commander');
 https://stackabuse.com/reading-and-writing-yaml-to-a-file-in-node-js-javascript/
@@ -210,8 +211,6 @@ function copyFile(sourceFile: string, dest: string) {
 
     // does the destination file exists?
     if (fs.existsSync(dest)) {
-      // TODO: Add option to overwrite existing file, perhaps with command line option
-      // log.info('Destination file already exists');
       log.info(chalk.red('Copy aborted: ') + 'File already exists at destination');
       return;
     } else {
@@ -234,7 +233,7 @@ function copyFile(sourceFile: string, dest: string) {
 // Opening window
 console.log(boxen(appName, { padding: 1 }));
 
-program.version('0.0.1');
+program.version(packageDotJSON.version);
 program.option('-d, --debug', 'Output extra information during operation');
 program.command('ls [folder]')
   .description('List Jekyll template folders and files')
