@@ -132,6 +132,7 @@ Copying header.html
 File successfully copied
 ```
 
-### Conclusion
+## Limitations
 
-That's it, that's what this module does, let me know if you find it useful or if you have features to suggest. Use the Issues tab to report problems.
++ Does not support wildcards, `.`, and other standard file specifications
++ Cannot copy an entire folder's contents or more than one file at a time

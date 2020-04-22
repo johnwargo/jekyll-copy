@@ -11,7 +11,6 @@ const fs = require('fs');
 const path = require('path');
 // https://stackoverflow.com/questions/9153571/is-there-a-way-to-get-version-from-package-json-in-nodejs-code
 const packageDotJSON = require('./package.json');
-const process = require('process');
 // https://www.npmjs.com/package/commander
 const program = require('commander');
 https://stackabuse.com/reading-and-writing-yaml-to-a-file-in-node-js-javascript/

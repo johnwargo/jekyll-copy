@@ -11,7 +11,6 @@ var fs = require('fs');
 var path = require('path');
 // https://stackoverflow.com/questions/9153571/is-there-a-way-to-get-version-from-package-json-in-nodejs-code
 var packageDotJSON = require('./package.json');
-var process = require('process');
 // https://www.npmjs.com/package/commander
 var program = require('commander');
 https: //stackabuse.com/reading-and-writing-yaml-to-a-file-in-node-js-javascript/
