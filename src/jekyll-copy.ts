@@ -11,6 +11,7 @@ const fs = require('fs');
 const path = require('path');
 // https://stackoverflow.com/questions/9153571/is-there-a-way-to-get-version-from-package-json-in-nodejs-code
 const packageDotJSON = require('./package.json');
+const process = require('process');
 // https://www.npmjs.com/package/commander
 const program = require('commander');
 https://stackabuse.com/reading-and-writing-yaml-to-a-file-in-node-js-javascript/
@@ -270,7 +271,7 @@ program.command('cp <filePath>')
     log.info(chalk.yellow('Command: ') + 'Copy File');
     let source = path.join(templateFolder, filePath);
     log.debug(`Source: ${source} `);
-    let dest = path.join(__dirname, filePath);
+    let dest = path.join(process.cwd(), filePath);
     log.debug(`Destination: ${dest} `);
     if (fileExists(source)) {
       copyFile(source, dest);
