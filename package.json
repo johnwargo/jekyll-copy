@@ -32,6 +32,6 @@
     "js-yaml": "^3.13.1"
   },
   "devDependencies": {
-    "@types/node": "^13.11.1"
+    "@types/node": "^13.13.52"
   }
 }
