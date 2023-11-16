@@ -1,3 +1,4 @@
+#!/usr/local/bin/env node
 /**
  * Jekyll Copy Module
  */
